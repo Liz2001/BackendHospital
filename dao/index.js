@@ -38,7 +38,7 @@ const Medico = sequelize.define("Medico", {
     link: DataTypes.STRING(50),
     horario: DataTypes.STRING(100),
     contrasena: DataTypes.STRING(50),
-    numero:  DataTypes.INTEGER,
+    numero: DataTypes.INTEGER,
     dias_atencion: DataTypes.STRING(100),
     pres_inicio_h:DataTypes.DATE,
     virtual_inicio_h: DataTypes.DATE,
@@ -63,6 +63,15 @@ const Interaccion = sequelize.define("Interaccion", {
     tipo_pregunta: DataTypes.STRING(50),
     comentarios: DataTypes.STRING(300),
     calificacion: DataTypes.INTEGER,
+    idPaciente:{
+        type:DataTypes.UUID,
+        allowNull:false
+    },
+    idMedico:{
+        type:DataTypes.UUID,
+        allowNull:false
+    }
+
 },{
     freezeTableName:true,
     timestamps: false
@@ -103,7 +112,21 @@ const Atencion = sequelize.define("Atencion", {
     especialidad_medico: DataTypes.STRING(100),
     direccion: DataTypes.STRING(100),
     puntuacion: DataTypes.INTEGER,
-    comentario: DataTypes.STRING(500)
+    comentario: DataTypes.STRING(500),
+    idMedico:{
+        type:DataTypes.UUID,
+        allowNull:false
+    },
+    idPaciente:{
+        type:DataTypes.UUID,
+        allowNull:false
+    },
+    idDiagnostico:{
+        type:DataTypes.UUID,
+        allowNull:false
+    }
+
+
 },{
         freezeTableName:true,
         timestamps: false
