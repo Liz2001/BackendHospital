@@ -19,7 +19,7 @@ app.use(cors())
 
 app.get("/medico", async(req,res)=>{
     
-    
+    try {
     let medicos= await Medico.findAll()
     let medicosespe=[]
 
@@ -47,7 +47,9 @@ app.get("/medico", async(req,res)=>{
 
     }
 
-    res.send(JSON.stringify(medicosespe))
+    res.send(JSON.stringify(medicosespe))} catch (error) {
+        return res.status(500).json({message : error.message});
+    }
 })
 
 app.post("/medico" , async (req,res)=>{
@@ -63,12 +65,14 @@ app.post("/medico" , async (req,res)=>{
         idEspecialidad:medico.idEspecialidad
         
     })
-    res.send("OK")  } catch (error) {
+    res.send("OK")  
+} catch (error) {
         return res.status(500).json({message : error.message});
     }  
 })
 
 app.put("/medicos" , async (req,res)=>{
+    try {
     const medico =req.body
 
     await Medico.update(medico, {
@@ -79,9 +83,13 @@ app.put("/medicos" , async (req,res)=>{
 
     })
     res.send("OK") 
+} catch (error) {
+    return res.status(500).json({message : error.message});
+} 
 })
 
 app.delete("/medicos/:id" , async (req,res)=>{
+    try {
     const idMedico =req.params.id
     const filasDestruidas = await Medico.destroy({
         where: {
@@ -94,20 +102,30 @@ app.delete("/medicos/:id" , async (req,res)=>{
     }else{
         res.status(400).send("ERROR:no existe ")
     }
+} catch (error) {
+    return res.status(500).json({message : error.message});
+} 
 
 })
 //get by correo
 
 app.post("/singup", async(req,res)=>{
+    try {
     const recibir =req.body
+} catch (error) {
+    return res.status(500).json({message : error.message});
+} 
 })
 
 //ESPECIALIDAD
 app.get("/especialidad", async(req,res)=>{
-
+    try {
     let especialidades= await Especialidad.findAll()
     
     res.send(JSON.stringify(especialidades))
+} catch (error) {
+    return res.status(500).json({message : error.message});
+} 
 })
 app.post("/especialidad" , async (req,res)=>{
     try {const especialidad = req.body
@@ -124,12 +142,16 @@ app.post("/especialidad" , async (req,res)=>{
 
 //DIAGNOSTICO
 app.get("/diagnostico", async(req,res)=>{
-
+    try {
     let diagnosticos= await Diagnostico.findAll()
     
     res.send(JSON.stringify(diagnosticos))
+} catch (error) {
+    return res.status(500).json({message : error.message});
+}   
 })
 app.post("/diagnostico" , async (req,res)=>{
+    try {
     const diagnostico = req.body
 
     await Diagnostico.create({
@@ -143,9 +165,13 @@ app.post("/diagnostico" , async (req,res)=>{
         dignostico:diagnostico.diagnostico,
         
     })
-    res.send("OK")    
+    res.send("OK") 
+} catch (error) {
+    return res.status(500).json({message : error.message});
+}      
 })
 app.put("/diagnostico" , async (req,res)=>{
+    try {
     const diagnostico =req.body
 
     await Diagnostico.update(diagnostico, {
@@ -156,15 +182,22 @@ app.put("/diagnostico" , async (req,res)=>{
 
     })
     res.send("OK") 
+} catch (error) {
+    return res.status(500).json({message : error.message});
+} 
 })
 //ATENCION
 app.get("/atencion", async(req,res)=>{
-
+    try {
     let atenciones= await Atencion.findAll()
     
     res.send(JSON.stringify(atenciones))
+} catch (error) {
+    return res.status(500).json({message : error.message});
+} 
 })
 app.post("/atencion" , async (req,res)=>{
+    try {
     const atencion = req.body
 
     await Atencion.create({
@@ -181,10 +214,14 @@ app.post("/atencion" , async (req,res)=>{
         comentario:atencion.comentario,
 
     })
-    res.send("OK")    
+    res.send("OK")
+} catch (error) {
+    return res.status(500).json({message : error.message});
+}     
 })
 app.put("/atencion" , async (req,res)=>{
-    const atencion =req.body
+    try {
+        const atencion =req.body
 
     await Atencion.update(atencion, {
         where: {
@@ -193,9 +230,13 @@ app.put("/atencion" , async (req,res)=>{
 
 
     })
-    res.send("OK") 
+    res.send("OK")
+} catch (error) {
+    return res.status(500).json({message : error.message});
+}  
 })
 app.delete("/atencion/:id" , async (req,res)=>{
+    try {
     const idAtencion =req.params.id
     const filasDestruidas = await Atencion.destroy({
         where: {
@@ -207,7 +248,9 @@ app.delete("/atencion/:id" , async (req,res)=>{
 
     }else{
         res.status(400).send("ERROR:no existe")
-    }
+    }} catch (error) {
+        return res.status(500).json({message : error.message});
+    } 
 
 })
 
@@ -237,7 +280,7 @@ app.post("/paciente" , async (req,res)=>{
 }    
 })
 app.put("/paciente" , async (req,res)=>{
-    const paciente =req.body
+    try {const paciente =req.body
 
     await Paciente.update(paciente, {
         where: {
@@ -246,10 +289,12 @@ app.put("/paciente" , async (req,res)=>{
 
 
     })
-    res.send("OK") 
+    res.send("OK") } catch (error) {
+        return res.status(500).json({message : error.message});
+    }  
 })
 app.delete("/paciente/:id" , async (req,res)=>{
-    const idPaciente =req.params.id
+    try { const idPaciente =req.params.id
     const filasDestruidas = await Paciente.destroy({
         where: {
             id: idPaciente
@@ -260,19 +305,23 @@ app.delete("/paciente/:id" , async (req,res)=>{
 
     }else{
         res.status(400).send("ERROR:no existe")
-    }
+    }} catch (error) {
+        return res.status(500).json({message : error.message});
+    }  
 
 })
 
 //INTERACCION
 app.get("/interaccion", async(req,res)=>{
 
-    let interacciones= await Interaccion.findAll()
+    try { let interacciones= await Interaccion.findAll()
     
-    res.send(JSON.stringify(interacciones))
+    res.send(JSON.stringify(interacciones))} catch (error) {
+        return res.status(500).json({message : error.message});
+    }  
 })
 app.post("/interaccion" , async (req,res)=>{
-    const interaccion = req.body
+    try {const interaccion = req.body
 
     await Interaccion.create({
 
@@ -280,10 +329,13 @@ app.post("/interaccion" , async (req,res)=>{
         comentarios: interaccion.comentarios, 
         calificacion: interaccion.calificacion, 
     })
-    res.send("OK")    
+    res.send("OK") } catch (error) {
+        return res.status(500).json({message : error.message});
+    }     
 })
 app.put("/interaccion" , async (req,res)=>{
-    const interaccion =req.body
+    try {
+        const interaccion =req.body
 
     await Interaccion.update(interaccion, {
         where: {
@@ -292,10 +344,12 @@ app.put("/interaccion" , async (req,res)=>{
 
 
     })
-    res.send("OK") 
+    res.send("OK") } catch (error) {
+        return res.status(500).json({message : error.message});
+    }  
 })
 app.delete("/interaccion/:id" , async (req,res)=>{
-    const idInteraccion=req.params.id
+    try {const idInteraccion=req.params.id
     const filasDestruidas = await Interaccion.destroy({
         where: {
             id: idInteraccion
@@ -306,7 +360,9 @@ app.delete("/interaccion/:id" , async (req,res)=>{
 
     }else{
         res.status(400).send("ERROR:no existe")
-    }
+    }} catch (error) {
+        return res.status(500).json({message : error.message});
+    }  
 
 })
 
