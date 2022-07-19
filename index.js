@@ -51,6 +51,8 @@ app.get("/medico", async(req,res)=>{
 })
 
 app.post("/medico" , async (req,res)=>{
+    
+    try {
     const medico = req.body
 
     await Medico.create({
@@ -61,7 +63,9 @@ app.post("/medico" , async (req,res)=>{
         idEspecialidad:medico.idEspecialidad
         
     })
-    res.send("OK")    
+    res.send("OK")  } catch (error) {
+        return res.status(500).json({message : error.message});
+    }  
 })
 
 app.put("/medicos" , async (req,res)=>{
@@ -106,13 +110,15 @@ app.get("/especialidad", async(req,res)=>{
     res.send(JSON.stringify(especialidades))
 })
 app.post("/especialidad" , async (req,res)=>{
-    const especialidad = req.body
+    try {const especialidad = req.body
 
     await Especialidad.create({
         nombre: especialidad.nombre,
         activo: especialidad.activo   
     })
-    res.send("OK")    
+    res.send("OK") } catch (error) {
+        return res.status(500).json({message : error.message});
+    }   
 })
 
 
@@ -207,12 +213,16 @@ app.delete("/atencion/:id" , async (req,res)=>{
 
 //PACIENTE
 app.get("/paciente", async(req,res)=>{
-
+    try {
     let pacientes= await Paciente.findAll()
     
     res.send(JSON.stringify(pacientes))
+} catch (error) {
+    return res.status(500).json({message : error.message});
+}
 })
 app.post("/paciente" , async (req,res)=>{
+    try {
     const paciente = req.body
 
     await Paciente.create({
@@ -221,7 +231,10 @@ app.post("/paciente" , async (req,res)=>{
         contrasena: paciente.contrasena,
         nombre: paciente.nombre    
     })
-    res.send("OK")    
+    res.send("OK")
+} catch (error) {
+    return res.status(500).json({message : error.message});
+}    
 })
 app.put("/paciente" , async (req,res)=>{
     const paciente =req.body
