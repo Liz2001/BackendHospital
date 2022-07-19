@@ -16,27 +16,52 @@ app.use(cors())
 
 //MEDICO
 
-app.get("/medico", async(req,res)=>{
 
-    let medicos= await Medico.findAll()
+app.get("/medico", async(req,res)=>{
     
-    res.send(JSON.stringify(medicos))
+    
+    let medicos= await Medico.findAll()
+    let medicosespe=[]
+
+    for(let masc of medicos){
+        const especialidad= await Especialidad.findByPk(masc.idEspecialidad)
+        medicosespe.push({
+               id:masc.id,
+               nombre:masc.nombre,
+               correo: masc.correo,
+               contrasena: masc.contrasena,
+               tipo: especialidad,
+                virtual_precio:masc.virtual_precio,
+                presencial_precio:masc.presencial_precio,
+                link:masc.link,
+                horario:masc.horario,
+                numero:masc.numero,
+                dias_atencion:masc.dias_atencion,
+                pres_inicio_h:masc.pres_inicio_h,
+                virtual_inicio_h:masc.virtual_inicio_h,
+                pres_fin_h:masc.pres_fin_h,
+                virtual_fin_h:masc.virtual_fin_h,
+
+
+        }) 
+
+    }
+
+    res.send(JSON.stringify(medicosespe))
 })
 
 app.post("/medico" , async (req,res)=>{
-    try{const medico = req.body
+    const medico = req.body
 
     await Medico.create({
 
         correo: medico.correo,
         contrasena: medico.contrasena,
-        nombre: medico.nombre
+        nombre: medico.nombre,
+        idEspecialidad:medico.idEspecialidad
         
     })
-    res.send("OK") 
-     }catch(error) {
-        return res.status(500).json({message : error.message});
-    }  
+    res.send("OK")    
 })
 
 app.put("/medicos" , async (req,res)=>{
@@ -67,7 +92,11 @@ app.delete("/medicos/:id" , async (req,res)=>{
     }
 
 })
+//get by correo
 
+app.post("/singup", async(req,res)=>{
+    const recibir =req.body
+})
 
 //ESPECIALIDAD
 app.get("/especialidad", async(req,res)=>{
@@ -76,6 +105,16 @@ app.get("/especialidad", async(req,res)=>{
     
     res.send(JSON.stringify(especialidades))
 })
+app.post("/especialidad" , async (req,res)=>{
+    const especialidad = req.body
+
+    await Especialidad.create({
+        nombre: especialidad.nombre,
+        activo: especialidad.activo   
+    })
+    res.send("OK")    
+})
+
 
 //DIAGNOSTICO
 app.get("/diagnostico", async(req,res)=>{
@@ -257,6 +296,7 @@ app.delete("/interaccion/:id" , async (req,res)=>{
     }
 
 })
+
 
 
 
