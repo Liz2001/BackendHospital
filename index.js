@@ -269,4 +269,4 @@ app.listen(port, ()=>{
     console.log("SERVIDOR INICIADO EN PUERTO"+ port)
 
 })
-sequelize.sync({force:true})
+//sequelize.sync({force:true})
