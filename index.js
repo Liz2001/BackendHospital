@@ -2,10 +2,13 @@ import  Express  from "express";
 import cors from "cors"
 import bodyParser from "body-parser"
 
+import { sequelize } from "./dao/index.js";
+
 import { Medico, Especialidad, Paciente, Atencion, Diagnostico, Interaccion } from "./dao/index.js";
 
 const app = Express()
-const port= 5000
+
+const port= process.env.PORT || 5000
 
 app.use(bodyParser.json())
 
@@ -266,3 +269,4 @@ app.listen(port, ()=>{
     console.log("SERVIDOR INICIADO EN PUERTO"+ port)
 
 })
+sequelize.sync({force:true})

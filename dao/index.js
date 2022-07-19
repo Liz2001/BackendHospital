@@ -1,8 +1,19 @@
 import { Sequelize,  DataTypes } from "sequelize";
 
+//const CADENA_CONEXION = "postgres://tpg:tpg@localhost:5432/prograbd"
+//export const sequelize = new Sequelize(CADENA_CONEXION)
 
-const CADENA_CONEXION = "postgres://tpg:tpg@localhost:5432/prograbd"
-const sequelize = new Sequelize(CADENA_CONEXION)
+//definir variables
+export const sequelize = new Sequelize(process.env.DATABASE_URL,{
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      },
+  }
+}
+)
+
 
 //definir variables
 
