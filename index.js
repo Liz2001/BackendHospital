@@ -24,7 +24,7 @@ app.get("/medico", async(req,res)=>{
 })
 
 app.post("/medico" , async (req,res)=>{
-    const medico = req.body
+    try{const medico = req.body
 
     await Medico.create({
 
@@ -33,7 +33,10 @@ app.post("/medico" , async (req,res)=>{
         nombre: medico.nombre
         
     })
-    res.send("OK")    
+    res.send("OK") 
+     }catch(error) {
+        return res.status(500).json({message : error.message});
+    }  
 })
 
 app.put("/medicos" , async (req,res)=>{
